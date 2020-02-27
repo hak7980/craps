@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+libray()
 library(tidyverse)
 ```
 
@@ -42,7 +43,13 @@ Does the code for rolling dice work? One way to check is to see if a simulation 
 # what ggplot wants.
 
 
-x <- tibble(results = map_int(1:100000, ~ roll_two_dice()))
+x <- tibble(
+  
+  p1 = map_int(1:100000, ~ roll_two_dice()),
+                            
+            p2 = (map_int(1:100000, ~ roll_two_dice()
+                          
+                          )))  
 
 # Once I have a tibble, the standard ggplot works. Would be nice to have the
 # x-axis labels corresponding to the actual roll values, like 2, 3 and so on.
@@ -64,6 +71,36 @@ x %>%
 ```{r simulation}
 # Assume that John Mark is honest. Yeah! How surprising is it to roll 6 winners?
 # How unusual is it to win against Ishan 4 to 0?
+
+x <- x %>%
+  
+  mutate(first_win = ifelse(
+                            p1 == 7 |
+                                                
+                            p1 == 11, 1, 0))
+
+x <- x %>%
+  
+  mutate(second_win = ifelse(
+                            p2 == 7 |
+                                                
+                            p2 == 11, 1, 0))
+
+x <- x %>%
+  
+  mutate(tie = ifelse(
+                            first_win == 1 &
+                                                
+                            second_win == 1,
+                            
+                            1, 0)) %>%
+  
+  mutate(first_win = ifelse(tie ==1, 0,1)) %>%
+  
+  mutate(second_win = ifelse(tie ==1, 0,1))
+
+
+
 
 
 ```
